@@ -21,6 +21,24 @@ export function Hello() {
     </html>
   );
 }
+
 export function Bye() {
   return <h1>Goodbye!</h1>;
+}
+
+export function Pokemon(props: any) {
+  const { name, weight } = props.data;
+  return (
+    <html>
+      <head>
+        <title>My pokedex</title>
+      </head>
+      <body>
+        <div id="root">
+          <div>name: {name}</div>
+          <div>weight: {weight}</div>
+        </div>
+      </body>
+    </html>
+  );
 }

@@ -1,10 +1,16 @@
 import { renderToReadableStream } from "react-dom/server";
-import { Hello, Bye } from "./app";
+import { Hello, Bye, Pokemon } from "./app";
 
 await Bun.build({
   entrypoints: ["./main.tsx"],
   outdir: "dist",
 });
+
+async function fetchPokemon(name: string) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  // todo add some checks
+  return response.json();
+}
 
 Bun.serve({
   port: 3000,
@@ -16,6 +22,12 @@ Bun.serve({
         }),
       ),
     "/bye": async () => new Response(await renderToReadableStream(<Bye />)),
+    "/pokemon/:name": async (req) => {
+      const data = await fetchPokemon(req.params.name);
+      return new Response(
+        await renderToReadableStream(<Pokemon data={data} />),
+      );
+    },
   },
   async fetch(req) {
     const path = new URL(req.url).pathname;

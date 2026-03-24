@@ -1,4 +1,4 @@
 import { hydrateRoot } from "react-dom/client";
-import { Hello } from "./app";
+import { Hello, Pokemon } from "./app";
 
-hydrateRoot(document, <Hello />);
+hydrateRoot(document, <Pokemon />);
