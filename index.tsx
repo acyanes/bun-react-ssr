@@ -6,8 +6,20 @@ await Bun.build({
   outdir: "dist",
 });
 
-async function fetchPokemon(name: string) {
+async function fetchPokemonSprite(url: string) {
+  const response = await fetch(url);
+  const results = await response.json();
+  const image_url = results.sprites.front_default;
+  return image_url;
+}
+
+async function fetchPokemonByName(name: string) {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  // todo add some checks
+  return response.json();
+}
+async function fetchPokemonById(id: string) {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
   // todo add some checks
   return response.json();
 }
@@ -23,9 +35,22 @@ Bun.serve({
       ),
     "/bye": async () => new Response(await renderToReadableStream(<Bye />)),
     "/pokemon/:name": async (req) => {
-      const data = await fetchPokemon(req.params.name);
+      const data = await fetchPokemonByName(req.params.name);
+      const url = data.forms[0].url;
+      const imageUrl = await fetchPokemonSprite(url);
+
+      console.log("fetchPokemonSprite url", imageUrl);
       return new Response(
-        await renderToReadableStream(<Pokemon data={data} />),
+        await renderToReadableStream(<Pokemon data={data} image={imageUrl} />),
+      );
+    },
+    "/pokemon/:id": async (req) => {
+      const data = await fetchPokemonById(req.params.id);
+      const url = data.forms[0].url;
+      const imageUrl = await fetchPokemonSprite(url);
+      console.log("fetchPokemonSprite url", imageUrl);
+      return new Response(
+        await renderToReadableStream(<Pokemon data={data} image={imageUrl} />),
       );
     },
   },

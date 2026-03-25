@@ -26,8 +26,9 @@ export function Bye() {
   return <h1>Goodbye!</h1>;
 }
 
-export function Pokemon(props: any) {
-  const { name, weight } = props.data;
+export function Pokemon({ data, image }: any) {
+  const { name, weight } = data;
+
   return (
     <html>
       <head>
@@ -35,6 +36,7 @@ export function Pokemon(props: any) {
       </head>
       <body>
         <div id="root">
+          <img src={image} />
           <div>name: {name}</div>
           <div>weight: {weight}</div>
         </div>
