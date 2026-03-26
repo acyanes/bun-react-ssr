@@ -1,34 +1,20 @@
 import React from "react";
 
-export function Hello() {
-  const [name, setName] = React.useState("World");
+export function App() {
   return (
     <html>
       <head>
-        <title>My Bun App</title>
+        <title>My pokedex</title>
       </head>
       <body>
-        <div id="root">
-          <h1>Hello, {name}!</h1>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <p>Type your name above!</p>
-        </div>
+        <div id="root">App</div>
       </body>
     </html>
   );
 }
 
-export function Bye() {
-  return <h1>Goodbye!</h1>;
-}
-
 export function Pokemon({ data, image }: any) {
   const { name, weight } = data;
-
   return (
     <html>
       <head>
@@ -42,5 +28,30 @@ export function Pokemon({ data, image }: any) {
         </div>
       </body>
     </html>
+  );
+}
+
+export function List({ allPokemon }: Array) {
+  return (
+    <>
+      {allPokemon.map((pokemon) => {
+        <div key={pokemon}>
+          <li>name</li>
+          <li>weight</li>
+        </div>;
+      })}
+    </>
+  );
+}
+
+export function Search() {
+  const [search, setSearch] = React.useState("");
+  const handleOnChange = (pokemon: string) => {
+    setSearch(pokemon);
+  };
+  return (
+    <>
+      <input type="text" placeholder="pikachu" onChange={handleOnChange} />
+    </>
   );
 }

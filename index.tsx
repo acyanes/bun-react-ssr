@@ -1,5 +1,5 @@
 import { renderToReadableStream } from "react-dom/server";
-import { Hello, Bye, Pokemon } from "./app";
+import { App, Pokemon } from "./app";
 
 await Bun.build({
   entrypoints: ["./main.tsx"],
@@ -29,17 +29,15 @@ Bun.serve({
   routes: {
     "/": async () =>
       new Response(
-        await renderToReadableStream(<Hello />, {
+        await renderToReadableStream(<App />, {
           bootstrapModules: ["main.js"],
         }),
       ),
-    "/bye": async () => new Response(await renderToReadableStream(<Bye />)),
     "/pokemon/:name": async (req) => {
       const data = await fetchPokemonByName(req.params.name);
       const url = data.forms[0].url;
       const imageUrl = await fetchPokemonSprite(url);
 
-      console.log("fetchPokemonSprite url", imageUrl);
       return new Response(
         await renderToReadableStream(<Pokemon data={data} image={imageUrl} />),
       );
@@ -48,7 +46,7 @@ Bun.serve({
       const data = await fetchPokemonById(req.params.id);
       const url = data.forms[0].url;
       const imageUrl = await fetchPokemonSprite(url);
-      console.log("fetchPokemonSprite url", imageUrl);
+
       return new Response(
         await renderToReadableStream(<Pokemon data={data} image={imageUrl} />),
       );
